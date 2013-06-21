@@ -27,6 +27,8 @@
 		2AD31E0E16D44DE900F10451 /* MJDijkstra.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AD31E0916D44DE900F10451 /* MJDijkstra.m */; };
 		2AD31E0F16D44DE900F10451 /* MJPriorityQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2AD31E0C16D44DE900F10451 /* MJPriorityQueue.mm */; };
 		2AD31E1016D44DE900F10451 /* MJPriorityQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2AD31E0C16D44DE900F10451 /* MJPriorityQueue.mm */; };
+		7A2DEA241773440900A5876B /* DijkstraNodeTestImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2DEA231773440900A5876B /* DijkstraNodeTestImpl.m */; };
+		7A2DEA271773441800A5876B /* DijkstraEdgeTestImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2DEA261773441800A5876B /* DijkstraEdgeTestImpl.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +58,10 @@
 		2AD31E0916D44DE900F10451 /* MJDijkstra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJDijkstra.m; sourceTree = "<group>"; };
 		2AD31E0B16D44DE900F10451 /* MJPriorityQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPriorityQueue.h; sourceTree = "<group>"; };
 		2AD31E0C16D44DE900F10451 /* MJPriorityQueue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MJPriorityQueue.mm; sourceTree = "<group>"; };
+		7A2DEA221773440900A5876B /* DijkstraNodeTestImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DijkstraNodeTestImpl.h; sourceTree = "<group>"; };
+		7A2DEA231773440900A5876B /* DijkstraNodeTestImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DijkstraNodeTestImpl.m; sourceTree = "<group>"; };
+		7A2DEA251773441800A5876B /* DijkstraEdgeTestImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DijkstraEdgeTestImpl.h; sourceTree = "<group>"; };
+		7A2DEA261773441800A5876B /* DijkstraEdgeTestImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DijkstraEdgeTestImpl.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +149,10 @@
 				2A2B774A16D357E800E7DA90 /* dijkstraLogicTests.h */,
 				2A2B774B16D357E800E7DA90 /* dijkstraLogicTests.m */,
 				2A2B774516D357E800E7DA90 /* Supporting Files */,
+				7A2DEA221773440900A5876B /* DijkstraNodeTestImpl.h */,
+				7A2DEA231773440900A5876B /* DijkstraNodeTestImpl.m */,
+				7A2DEA251773441800A5876B /* DijkstraEdgeTestImpl.h */,
+				7A2DEA261773441800A5876B /* DijkstraEdgeTestImpl.m */,
 			);
 			path = dijkstraLogicTests;
 			sourceTree = "<group>";
@@ -295,6 +305,8 @@
 				2AD31E0E16D44DE900F10451 /* MJDijkstra.m in Sources */,
 				2AD31E1016D44DE900F10451 /* MJPriorityQueue.mm in Sources */,
 				2A8B682D16D5EFEF00676E93 /* MJPriorityDictionary.mm in Sources */,
+				7A2DEA241773440900A5876B /* DijkstraNodeTestImpl.m in Sources */,
+				7A2DEA271773441800A5876B /* DijkstraEdgeTestImpl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

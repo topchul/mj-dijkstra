@@ -82,3 +82,22 @@ typedef struct
 
 MJDijkstraSolution Dijkstra(NSDictionary *G, id start, id end);
 NSArray *shortestPath(NSDictionary *G, id start, id end);
+
+
+#pragma mark with Object Nodes and Edges
+@protocol DijkstraEdge;
+
+@protocol DijkstraNode <NSObject, NSCopying>
+@property (nonatomic, readonly, copy) NSString *unique;
+@property (nonatomic, readonly) NSSet *edges;
+@end
+
+@protocol DijkstraEdge <NSObject>
+@property (nonatomic, readonly, unsafe_unretained) id<DijkstraNode> fromNode;
+@property (nonatomic, readonly, unsafe_unretained) id<DijkstraNode> toNode;
+@property (nonatomic, readonly, copy) NSNumber *length;
+@end
+
+
+MJDijkstraSolution DijkstraWithNodes(id<DijkstraNode> start, id<DijkstraNode> end);
+NSArray *shortestPathWithNodes(id<DijkstraNode> start, id<DijkstraNode> end);

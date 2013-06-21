@@ -10,6 +10,8 @@
 #import "MJPriorityQueue.h"
 #import "MJPriorityDictionary.h"
 #import "MJDijkstra.h"
+#import "DijkstraNodeTestImpl.h"
+#import "DijkstraEdgeTestImpl.h"
 
 @implementation dijkstraLogicTests
 
@@ -306,6 +308,163 @@
     
     NSLog(@"Path length: %d", [res.distances[end] integerValue]);
     //STAssertTrue([res.distances[end] integerValue] == 9, @"Wrong length of a found path.");
+}
+
+-(void)testDijkstraWithNodes
+{
+    // equivalent testDijkstra
+    NSMutableDictionary *graph = [@{} mutableCopy]; {
+        for (NSString *unique in @[@"s", @"u", @"v", @"x", @"y"]) {
+            graph[unique] = [[DijkstraNodeTestImpl alloc] initWithUnique:unique];
+        }
+        
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"s"] toNode:graph[@"u"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"s"] toNode:graph[@"x"] length:@5];
+
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"u"] toNode:graph[@"v"] length:@1];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"u"] toNode:graph[@"x"] length:@2];
+
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"v"] toNode:graph[@"y"] length:@1];
+
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"x"] toNode:graph[@"u"] length:@3];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"x"] toNode:graph[@"v"] length:@9];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"x"] toNode:graph[@"y"] length:@2];
+
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"y"] toNode:graph[@"s"] length:@7];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"y"] toNode:graph[@"v"] length:@6];
+
+//        NSLog(@"%@", graph);
+    }
+
+    DijkstraNodeTestImpl *start = graph[@"s"];
+    DijkstraNodeTestImpl *end = graph[@"v"];
+    
+    //NSArray *answer = @[@"s", @"x", @"u", @"v"];
+    MJDijkstraSolution res = DijkstraWithNodes(start, end);
+    
+    STAssertTrue([res.distances[end] integerValue] == 9, @"Wrong length of a found path.");
+}
+
+-(void)testShortestPathWithNodes
+{
+    // equivalent testShortestPath
+    NSMutableDictionary *graph = [@{} mutableCopy]; {
+        for (NSString *unique in @[@"s", @"u", @"v", @"x", @"y"]) {
+            graph[unique] = [[DijkstraNodeTestImpl alloc] initWithUnique:unique];
+        }
+        
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"s"] toNode:graph[@"u"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"s"] toNode:graph[@"x"] length:@5];
+        
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"u"] toNode:graph[@"v"] length:@1];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"u"] toNode:graph[@"x"] length:@2];
+        
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"v"] toNode:graph[@"y"] length:@1];
+        
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"x"] toNode:graph[@"u"] length:@3];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"x"] toNode:graph[@"v"] length:@9];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"x"] toNode:graph[@"y"] length:@2];
+        
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"y"] toNode:graph[@"s"] length:@7];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"y"] toNode:graph[@"v"] length:@6];
+        
+//        NSLog(@"%@", graph);
+    }
+    
+    DijkstraNodeTestImpl *start = graph[@"s"];
+    DijkstraNodeTestImpl *end = graph[@"v"];
+        
+    NSArray *answer = @[graph[@"s"], graph[@"x"], graph[@"u"], graph[@"v"]];
+    NSArray *path = shortestPathWithNodes(start, end);
+    
+    STAssertTrue([answer count] == [path count], @"Wrong length of the found path.");
+    
+    if ([answer count] != [path count])
+        return;
+    
+    for (int i = 0; i < [answer count]; ++i)
+    {
+        STAssertTrue(answer[i] == path[i], @"Wrong vertex in the found path.");
+    }
+}
+
+-(void)testShortestPathWithCirculaNodes
+{
+    // shortestPath with circle
+    //       {1} - 10 - 9 - 8
+    //        |             |
+    //        2             |
+    //        |             |
+    //  a - [b,3] ------- [c,7] - d - e
+    //        |             |
+    //        4 ---- 5 --- {6}
+    // 1 ==> 6 : 1-2-3-d-7-6
+    NSMutableDictionary *graph = [@{} mutableCopy]; {
+        for (NSString *unique in @[@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10"]) {
+            graph[unique] = [[DijkstraNodeTestImpl alloc] initWithUnique:unique];
+        }
+        for (NSString *unique in @[@"a", @"b", @"c", @"d", @"e"]) {
+            graph[unique] = [[DijkstraNodeTestImpl alloc] initWithUnique:unique];
+        }
+        
+        // circle
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"1"] toNode:graph[@"2"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"2"] toNode:graph[@"3"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"3"] toNode:graph[@"4"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"4"] toNode:graph[@"5"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"5"] toNode:graph[@"6"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"6"] toNode:graph[@"7"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"7"] toNode:graph[@"8"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"8"] toNode:graph[@"9"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"9"] toNode:graph[@"10"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"10"] toNode:graph[@"1"] length:@10];
+        
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"2"] toNode:graph[@"1"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"3"] toNode:graph[@"2"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"4"] toNode:graph[@"3"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"5"] toNode:graph[@"4"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"6"] toNode:graph[@"5"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"7"] toNode:graph[@"6"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"8"] toNode:graph[@"7"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"9"] toNode:graph[@"8"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"10"] toNode:graph[@"9"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"1"] toNode:graph[@"10"] length:@10];
+
+        // arrow
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"a"] toNode:graph[@"b"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"b"] toNode:graph[@"c"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"c"] toNode:graph[@"d"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"d"] toNode:graph[@"e"] length:@10];
+        
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"b"] toNode:graph[@"a"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"c"] toNode:graph[@"b"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"d"] toNode:graph[@"c"] length:@10];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"e"] toNode:graph[@"d"] length:@10];
+        
+        // edge of arrow
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"b"] toNode:graph[@"3"] length:@1];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"c"] toNode:graph[@"7"] length:@1];
+
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"3"] toNode:graph[@"b"] length:@1];
+        [DijkstraEdgeTestImpl setEdgeWithFromNode:graph[@"7"] toNode:graph[@"c"] length:@1];
+//        NSLog(@"%@", graph);
+    }
+    
+    DijkstraNodeTestImpl *start = graph[@"1"];
+    DijkstraNodeTestImpl *end = graph[@"6"];
+    
+    NSArray *answer = @[graph[@"1"], graph[@"2"], graph[@"3"], graph[@"b"], graph[@"c"], graph[@"7"], graph[@"6"]];
+    NSArray *path = shortestPathWithNodes(start, end);
+    
+    STAssertTrue([answer count] == [path count], @"Wrong length of the found path.");
+    
+    if ([answer count] != [path count])
+        return;
+    
+    for (int i = 0; i < [answer count]; ++i)
+    {
+        STAssertTrue(answer[i] == path[i], @"Wrong vertex in the found path.");
+    }
 }
 
 @end

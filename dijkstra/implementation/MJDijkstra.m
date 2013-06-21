@@ -86,3 +86,64 @@ NSArray *shortestPath(NSDictionary *graph, id start, id end)
     return path;
 }
 
+MJDijkstraSolution DijkstraWithNodes(id<DijkstraNode> start, id<DijkstraNode> end)
+{
+    NSMutableDictionary *dist = [NSMutableDictionary dictionary];	// dictionary of final distances
+    NSMutableDictionary *pred = [NSMutableDictionary dictionary];	// dictionary of predecessors
+    MJPriorityDictionary *prio = [MJPriorityDictionary dictionaryAscending:NO];// estimated dist. of non-final vert.
+    MJDijkstraSolution res = {};
+    
+    prio[start] = @0;
+    
+    for (id vtx1 = [prio top]; vtx1; vtx1 = [prio top])
+    {
+        dist[vtx1] = prio[vtx1];
+        [prio pop];
+        
+        if ([vtx1 isEqual:end])
+            break;
+        
+        for (id<DijkstraEdge> edge in [vtx1 edges]) {
+            id vtx2 = edge.toNode;
+            int vwLength = [dist[vtx1] integerValue] + [edge.length integerValue];
+            
+            if (dist[vtx2] != nil)
+            {
+                if (vwLength < [dist[vtx2] integerValue])
+                {
+                    NSLog(@"Dijkstra: found better path to already-final vertex");
+                    return res;
+                }
+            }
+            else if (prio[vtx2] == nil || vwLength < [prio[vtx2] integerValue])
+            {
+                prio[vtx2] = [NSNumber numberWithInt:vwLength];
+                pred[vtx2] = vtx1;
+            }
+        }
+    }
+    
+    res.distances = dist;
+    res.predecessors = pred;
+    return res;
+}
+
+NSArray *shortestPathWithNodes(id<DijkstraNode> start, id<DijkstraNode> end)
+{
+    NSMutableArray *path = [NSMutableArray array];
+    MJDijkstraSolution solution = DijkstraWithNodes(start, end);
+    id e = end;
+    while (true)
+    {
+        [path addObject:e];
+        if ([e isEqual:start])
+            break;
+        e = solution.predecessors[e];
+    }
+    
+    int l = [path count] - 1;
+    for (int i = 0; i < l-i; ++i)
+        [path exchangeObjectAtIndex:i withObjectAtIndex:l-i];
+    
+    return path;
+}
