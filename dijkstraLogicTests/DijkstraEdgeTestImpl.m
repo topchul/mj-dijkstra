@@ -24,6 +24,13 @@
     [fromNode addEdge:edge];
 }
 
+- (void)dealloc
+{
+    [self->_length release];
+    
+    [super dealloc];
+}
+
 - (NSString *)description
 {
     NSMutableString *s = [@"" mutableCopy];

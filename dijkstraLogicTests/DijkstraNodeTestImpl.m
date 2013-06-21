@@ -24,17 +24,24 @@
     self = [super init];
     if (self) {
         self->_unique = [unique copy];
-        self->_edges = [NSMutableSet set];
+        self->_edges = [[NSMutableSet alloc] init];
     }
     return self;
 }
 
+- (void)dealloc
+{
+    [self->_unique release];
+    [self->_edges release];
+    
+    [super dealloc];
+}
 
 - (id)copyWithZone:(NSZone *)zone
 {
     DijkstraNodeTestImpl *newNode = [[DijkstraNodeTestImpl allocWithZone:zone] init];
     newNode->_unique = [self->_unique copyWithZone:zone];
-    newNode->_edges = self->_edges;
+    newNode->_edges = [self->_edges retain];
     
     return newNode;
 }
