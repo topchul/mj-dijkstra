@@ -76,8 +76,8 @@
 
 typedef struct
 {
-    NSDictionary *distances;
-    NSDictionary *predecessors;
+    __unsafe_unretained NSDictionary *distances;
+    __unsafe_unretained NSDictionary *predecessors;
 } MJDijkstraSolution;
 
 MJDijkstraSolution Dijkstra(NSDictionary *G, id start, id end);
