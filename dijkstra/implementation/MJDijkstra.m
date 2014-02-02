@@ -103,7 +103,7 @@ MJDijkstraSolution DijkstraWithNodes(id<DijkstraNode> start, id<DijkstraNode> en
         if ([vtx1 isEqual:end])
             break;
         
-        for (id<DijkstraEdge> edge in [vtx1 edges]) {
+        for (id<DijkstraEdge> edge in [(id<DijkstraNode>)vtx1 edges]) {
             id vtx2 = edge.toNode;
             int vwLength = [dist[vtx1] integerValue] + [edge.length integerValue];
             
